@@ -1,5 +1,5 @@
-require "rbrt/version"
+# require "rbrt/version"
 
 module Rbrt
-  # Your code goes here...
 end
+Gem.find_files("rbrt/*.rb").each { |path| require path }
