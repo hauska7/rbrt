@@ -1,5 +1,5 @@
 require "rbrt/associations"
-require "./lib/rbrt/association_has_many"
+require "rbrt/association_has_many"
 
 module Rbrt::DomainAssociations
   def self.extended(domain_object)

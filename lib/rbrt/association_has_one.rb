@@ -1,4 +1,4 @@
-require "./lib/rbrt/association_has_one_state"
+require "rbrt/association_has_one_state"
 
 # TODO: throw exceprion if accessing not assigned object
 class Rbrt::AssociationHasOne < SimpleDelegator

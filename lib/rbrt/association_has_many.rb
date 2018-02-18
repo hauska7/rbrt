@@ -1,6 +1,6 @@
-require "./lib/rbrt/association_store"
-require "./lib/rbrt/association_store_single"
-require "./lib/rbrt/association_has_many_state"
+require "rbrt/association_store"
+require "rbrt/association_store_single"
+require "rbrt/association_has_many_state"
 
 class Rbrt::AssociationHasMany
   def self.build_has_many(base:, name:)

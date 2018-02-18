@@ -1,4 +1,4 @@
-require "./lib/rbrt/state"
+require "rbrt/state"
 
 module Rbrt::DomainState
   def self.extended(domain_object)

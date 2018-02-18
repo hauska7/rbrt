@@ -1,4 +1,4 @@
-require "./lib/rbrt/collection_map_missing"
+require "rbrt/collection_map_missing"
 
 class Rbrt::AssociationStore
   def self.build
