@@ -34,7 +34,7 @@ class Rbrt::AssociationStoreSingle < SimpleDelegator
   def remove(association)
     result = Struct.new(:store, :removed, :not_found).new(self, [], [])
     if __getobj__ == association
-      __setobj__(AssociationNull.new)
+      __setobj__(Rbrt::AssociationNull.new)
       result.removed << association
     else
       result.not_found << association
