@@ -1,4 +1,4 @@
-require "./lib/rbrt/associations"
+require "rbrt/associations"
 require "./lib/rbrt/association_has_many"
 
 module Rbrt::DomainAssociations
