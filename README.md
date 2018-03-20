@@ -5,21 +5,21 @@
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rbrt'
+gem 'rbrt', git: 'https://github.com/hauska7/rbrt'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
+And then copy file rbrt/lib/rbrt_setup.rb.move_to_project_main_directory to rbrt_setup.rb in your project main directory it needs to be required when running rbrt. For example when running rbrt from rspec without loading eg Rails it should be required in spec helper and in case you run rbrt in Rails application rbrt_setup.rb should be required in initializers.
 
-    $ gem install rbrt
+   $ `bundle show rbrt`\lib\rbrt_setup.rb.move_to_project_main_directory rbrt_setup.rb
 
 ## Usage
 
-This is a collection of classes to help write business rules in ruby, mainly handling domain object associations like has_many, has_one and role. Program can then depend on query methods for DB reads(queries.post_with_comments(post_id: post_id)) and persistance object (persistance.add(post); persistance.add(comments); persistance.persist) for DB writes.
-Checkout example app: TODO: example app url
+This is a collection of classes to help write business logic, mainly handling domain object associations like has_many, has_one and role. It will also keep state for new/destroyed objects/associations that can later be read by persistance object to generate proper SQL writes. Program can depend on query methods for DB reads(queries.post_with_comments(post_id: post_id)) and persistance object (persistance.add(post); persistance.add(comments); persistance.persist) for DB writes.
+Checkout example app: https://github.com/hauska7/hacker_news_rbrt
 
 ## Contributing
 
