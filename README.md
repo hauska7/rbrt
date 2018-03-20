@@ -18,6 +18,59 @@ And then copy file rbrt/lib/rbrt_setup.rb.move_to_project_main_directory to rbrt
 
 ## Usage
 
+Example use case:
+
+```ruby
+require "./app/domain/game"
+require "./app/cases/cases"
+
+class GameCreate
+  def self.call(*args)
+    new(*args).call
+  end
+
+  def initialize(queries:, persistance:, authorize:, current_user:, group_db_id:, attributes:)
+    @persistance = persistance
+    @queries = queries
+    @current_user = current_user
+    @group_db_id = group_db_id
+    @attributes = attributes
+    @authorize = authorize
+  end
+
+  def call
+    @errors = @current_user.ban_errors(self)
+    if @errors.empty?
+      @errors = @authorize.game_create_errors(@current_user)
+      if @errors.empty?
+        group = @queries.group_with_owner_where_group_id(group_id: @group_db_id).group
+        @errors = group.can_add_game_errors(@current_user)
+        if @errors.empty?
+          @game = Game.build
+          @game.attributes.set(@attributes)
+          @game.a.judge.associate(@current_user.a.judged_games).state.set_loaded
+          @game.a.group.associate(group.a.games).state.set_loaded
+          @errors = @game.validate_create_errors
+          if @errors.empty?
+            @persistance.add(@current_user, @game, group)
+            @persistance.persist
+          end
+        end
+      end
+    end
+    Struct
+      .new(:case_name,   :type, :current_user, :persistance, :game, :page,          :success?,      :errors)
+      .new(:game_create, type,  @current_user, @persistance, @game, @resolved_page, @errors.empty?, @errors).tap do |result|
+      Cases.case_ran(result)
+    end
+  end
+
+  def type
+    :write
+  end
+end                
+```
+
 This is a collection of classes to help write business logic, mainly handling domain object associations like has_many, has_one and role. It will also keep state for new/destroyed objects/associations that can later be read by persistance object to generate proper SQL writes.
 
 Program can depend on query methods for DB reads
