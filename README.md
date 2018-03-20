@@ -18,7 +18,18 @@ And then copy file rbrt/lib/rbrt_setup.rb.move_to_project_main_directory to rbrt
 
 ## Usage
 
-This is a collection of classes to help write business logic, mainly handling domain object associations like has_many, has_one and role. It will also keep state for new/destroyed objects/associations that can later be read by persistance object to generate proper SQL writes. Program can depend on query methods for DB reads(queries.post_with_comments(post_id: post_id)) and persistance object (persistance.add(post); persistance.add(comments); persistance.persist) for DB writes.
+This is a collection of classes to help write business logic, mainly handling domain object associations like has_many, has_one and role. It will also keep state for new/destroyed objects/associations that can later be read by persistance object to generate proper SQL writes.
+
+Program can depend on query methods for DB reads
+
+  `queries.post_with_comments(post_id: post_id))`
+  
+And persistance object for DB writes.
+
+  `persistance.add(post)`
+  `persistance.add(comments)`
+  `persistance.persist`
+  
 Checkout example app: https://github.com/hauska7/hacker_news_rbrt
 
 ## Contributing
