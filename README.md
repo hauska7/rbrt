@@ -14,7 +14,7 @@ And then execute:
 
 And then copy file rbrt/lib/rbrt_setup.rb.move_to_project_main_directory to rbrt_setup.rb in your project main directory it needs to be required when running rbrt. For example when running rbrt from rspec without loading eg Rails it should be required in spec helper and in case you run rbrt in Rails application rbrt_setup.rb should be required in initializers.
 
-   $ `bundle show rbrt`\lib\rbrt_setup.rb.move_to_project_main_directory rbrt_setup.rb
+   $ cp \`bundle show rbrt\`\lib\rbrt_setup.rb.move_to_project_main_directory rbrt_setup.rb
 
 ## Usage
 
