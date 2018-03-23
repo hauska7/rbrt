@@ -15,9 +15,10 @@ class Rbrt::DBObjectsInMemory
     @type_db_id_store = {}
   end
 
-  def get(object)
-    return Result.new(recent: object) if object.db_id.nil?
-    type_and_db_id = [object.type, object.db_id]
+  def get(object, db_id: nil)
+    db_id = db_id || object.db_id
+    return Result.new(recent: object) if db_id.nil?
+    type_and_db_id = [object.type, db_id]
     Result.new(recent: @type_db_id_store
                          .fetch(type_and_db_id) { object.tap { @type_db_id_store[type_and_db_id] = object } }
                          .tap(&:revise_attributes.with(object.attributes)))
