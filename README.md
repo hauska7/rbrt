@@ -4,7 +4,7 @@
 
 This is a business logic framework for ruby. It is ment as help for keeping tract of what is the state of domain objects and associations in memory - without synchronizing with DB. When time comes you can add domain objects to persistance object which will generate proper SQL writes.
 
-Program can depend on query methods for DB reads
+Business logic can depend on query methods for DB reads
 
   `queries.post_with_comments(post_id: post_id))`
   
