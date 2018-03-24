@@ -1,24 +1,22 @@
 # Rbrt
 
-## Installation
+## Descriprion
 
-Add this line to your application's Gemfile:
+This is a business logic framework for ruby. It is ment as help for keeping tract of what is the state of domain objects and associations in memory - without synchronizing with DB. When time comes you can add domain objects to persistance object which will generate proper SQL writes.
 
-```ruby
-gem 'rbrt', git: 'https://github.com/hauska7/rbrt'
-```
+Program can depend on query methods for DB reads
 
-And then execute:
+  `queries.post_with_comments(post_id: post_id))`
+  
+And persistance object for DB writes.
 
-    $ bundle
+  `persistance.add(post)`
+  `persistance.add(comments)`
+  `persistance.persist`
+  
+Checkout example app: https://github.com/hauska7/hacker_news_rbrt
 
-And then copy file rbrt/lib/rbrt_setup.rb.move_to_project_main_directory to rbrt_setup.rb in your project main directory it needs to be required when running rbrt. For example when running rbrt from rspec without loading eg Rails it should be required in spec helper and in case you run rbrt in Rails application rbrt_setup.rb should be required in initializers.
-
-   $ cp \`bundle show rbrt\`\lib\rbrt_setup.rb.move_to_project_main_directory rbrt_setup.rb
-
-## Usage
-
-Example use case:
+## Use case example
 
 ```ruby
 require "./app/domain/game"
@@ -71,23 +69,25 @@ class GameCreate
 end                
 ```
 
-This is a collection of classes to help write business logic, mainly handling domain object associations like has_many, has_one and role. It will also keep state for new/destroyed objects/associations that can later be read by persistance object to generate proper SQL writes.
+## Installation
 
-Program can depend on query methods for DB reads
+Add this line to your application's Gemfile:
 
-  `queries.post_with_comments(post_id: post_id))`
-  
-And persistance object for DB writes.
+```ruby
+gem 'rbrt', git: 'https://github.com/hauska7/rbrt'
+```
 
-  `persistance.add(post)`
-  `persistance.add(comments)`
-  `persistance.persist`
-  
-Checkout example app: https://github.com/hauska7/hacker_news_rbrt
+And then execute:
+
+    $ bundle
+
+And then copy file rbrt/lib/rbrt_setup.rb.move_to_project_main_directory to rbrt_setup.rb in your project main directory it needs to be required when running rbrt. For example when running rbrt from rspec without loading eg Rails it should be required in spec helper and in case you run rbrt in Rails application rbrt_setup.rb should be required in initializers.
+
+   $ cp \`bundle show rbrt\`\lib\rbrt_setup.rb.move_to_project_main_directory rbrt_setup.rb
 
 ## Contributing
 
-Bug reports and pull requests are welcome. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome. Currently rspec tests for this gem are lacking as it is being tested through an application I am writing and this is a by product so keep that in mind. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
