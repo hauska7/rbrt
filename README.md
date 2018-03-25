@@ -69,6 +69,10 @@ class GameCreate
 end                
 ```
 
+## Warning
+
+Rbrt is in early development phase and as such it is not viable for any time sensitive development. If you decided to use it for a project it is very much possible you would need at some point contribute to rbrt.
+
 ## Installation
 
 Add this line to your application's Gemfile:
