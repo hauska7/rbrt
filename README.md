@@ -2,7 +2,7 @@
 
 ## Descriprion
 
-This is a business logic framework for ruby. It is ment as help for keeping tract of what is the state of domain objects and associations in memory - without synchronizing with DB. When time comes you can add domain objects to persistance object which will generate proper SQL writes.
+This is a business logic framework for ruby. It is meant as help for keeping tract of what is the state of domain objects and associations in memory. When time comes you can add domain objects to persistance object which will generate proper SQL writes.
 
 Business logic can depend on query methods for DB reads
 
