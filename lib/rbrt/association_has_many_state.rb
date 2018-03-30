@@ -47,7 +47,7 @@ class Rbrt::AssociationHasManyState
   private
 
   def is?(flag)
-    @flags.fetch(flag) { fail "flag #{flag} not set" }
+    @flags.fetch(flag, false)
   end
 
   def assert(*flags)
