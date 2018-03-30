@@ -4,9 +4,14 @@ class Rbrt::AssociationHasManyState
     @flags = {}
   end
 
+  def unset_all
+    set(all: false)
+    self
+  end
+
   # tODO: move just for has one
-  def loaded?
-    is?(:loaded)
+  def all?
+    is?(:all)
   end
 
   def set_all
@@ -27,6 +32,11 @@ class Rbrt::AssociationHasManyState
   def unset_loaded
     set(loaded: false)
     self
+  end
+
+  # tODO: move just for has one
+  def loaded?
+    is?(:loaded)
   end
 
   def assert_loaded
