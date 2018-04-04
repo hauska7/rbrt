@@ -8,8 +8,8 @@ class Rbrt::State
   end
 
   def intialize(destroyed:, new_record:)
-    @destroyed = false
-    @new_record = false
+    @destroyed = destroyed
+    @new_record = new_record
   end
 
   def new_record?
