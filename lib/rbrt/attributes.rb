@@ -25,7 +25,7 @@ class Rbrt::Attributes
   end
 
   def set_content(content)
-    @content.merge!(content.select { |attribute, _value| @content.keys.include?(attribute) })
+    @content.merge!(content.select { |attribute, _value| @whitelist.include?(attribute) })
     self
   end
 
