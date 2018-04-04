@@ -7,7 +7,7 @@ class Rbrt::State
     new(destroyed: false, new_record: false)
   end
 
-  def intialize(destroyed:, new_record:)
+  def initialize(destroyed:, new_record:)
     @destroyed = destroyed
     @new_record = new_record
   end
