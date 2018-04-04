@@ -1,6 +1,33 @@
 class Rbrt::State
-  def initialize
+  def self.build_new
+    new(destroyed: false, new_record: true)
+  end
+
+  def self.build_existing
+    new(destroyed: false, new_record: false)
+  end
+
+  def intialize(destroyed:, new_record:)
     @destroyed = false
+    @new_record = false
+  end
+
+  def new_record?
+    @new_record
+  end
+
+  def new_record
+    @new_record = true
+    self
+  end
+
+  def existing_record?
+    !@new_record
+  end
+  
+  def existing_record
+    @new_record = false
+    self
   end
   
   def destroyed?

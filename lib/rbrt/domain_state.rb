@@ -2,7 +2,6 @@ require "rbrt/state"
 
 module Rbrt::DomainState
   def self.extended(domain_object)
-    domain_object.set_state(Rbrt::State.new)
   end
 
   def state
@@ -11,5 +10,6 @@ module Rbrt::DomainState
 
   def set_state(state)
     @state = state
+    self
   end
 end
