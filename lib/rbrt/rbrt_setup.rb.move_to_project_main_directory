@@ -15,8 +15,23 @@ end
 
 # nil.null? => true
 
+module DotAccess
+  def method_missing(method_name, *_args, &block)
+    self[method_name]
+  end
+end
+
+# TODO: improve dot access
 class Hash
   def map_keys(mappings)
     map {|k, v| [mappings[k] || k, v] }.to_h
   end
-end
+
+  private def dot_access_module
+    @dot_access_module ||= DotAccess
+  end
+
+  def dot_access
+    extend(dot_access_module)
+  end
+end                        
