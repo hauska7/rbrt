@@ -15,6 +15,8 @@ class Rbrt::DBObjectsInMemory
     @type_db_id_store = {}
   end
 
+  attr_reader :type_db_id_store
+
   def get(object, db_id: nil)
     db_id = db_id || object.db_id
     return Result.new(recent: object) if db_id.nil?
