@@ -39,21 +39,27 @@ class CreateGame
   end
 
   def call
-    @form.validate
+    @form
+    .validate
     .tap { |errors| return failure(errors: errors) unless errors.empty? }
-    @current_user.ban_errors(self)
+    @current_user
+    .ban_errors(self)
     .tap { |errors| return failure(errors: errors) unless errors.empty? }
-    @authorize.create_game_errors(@current_user)
+    @authorize
+    .create_game_errors(@current_user)
     .tap { |errors| return failure(errors: errors) unless errors.empty? }
     group_query = @queries.group_with_owner_where_group_id(group_id: @form.group_db_id)
     group = group_query.group
-    group.manager.can_add_game_errors(@current_user)
+    group
+    .manager
+    .can_add_game_errors(@current_user)
     .tap { |errors| return failure(errors: errors) unless errors.empty? }
     game = Game.build
     game.attributes.set(@form.attributes)
     game.a.judge.associate(@current_user.a.judged_games).state.set_loaded
     game.a.group.associate(group.a.games).state.set_loaded
-    @game.validate_create_errors
+    @game
+    .validate_create_errors
     .tap { |errors| return failure(errors: errors) unless errors.empty? }
     @persistance.add(@current_user, game, group)
     @persistance.persist
