@@ -17,6 +17,10 @@ class Rbrt::DBObjectsInMemory
 
   attr_reader :type_db_id_store
 
+  def empty_copy
+    self.class.build
+  end
+
   def get(object, db_id: nil)
     db_id = db_id || object.db_id
     return Result.new(recent: object) if db_id.nil?
