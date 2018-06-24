@@ -44,9 +44,6 @@ class CreateGame < Case
     guard_errors { @current_user.authorize_case(self, object_factory: @object_factory).errors }
     guard_errors { @form.validate.errors }
 
-    group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids)
-    groups = group_query.groups
-
     game = @domain_factory.build_new_game
     game.get_object_factory(@object_factory)
 
@@ -55,6 +52,10 @@ class CreateGame < Case
 
     game_manager = game.object_factory.manager(current_user: @current_user, domain_factory: @domain_factory)
     guard_errors { game_manager.set_judge(@current_user).errors }
+
+    group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids)
+    groups = group_query.groups
+
     guard_errors do
       game_manager.join_open_groups(*groups.select(&:open?)).errors
     end 
