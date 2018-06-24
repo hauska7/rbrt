@@ -41,31 +41,29 @@ class CreateGame < Case
   end
 
   def call
-    guard_errors { @current_user.authorize_case(self, object_factory: @object_factory).errors }
-    guard_errors { @form.validate.errors }
+    @current_user.authorize_case(self, object_factory: @object_factory)
+    @form.validate
 
     game = @domain_factory.build_new_game
     game.get_object_factory(@object_factory)
 
     game_validator = game.object_factory.validator
-    guard_errors { game_validator.assign_user_input(@form.attributes).errors }
+    game_validator.assign_user_input(@form.attributes)
 
     game_manager = game.object_factory.manager(current_user: @current_user, domain_factory: @domain_factory)
-    guard_errors { game_manager.set_judge(@current_user).errors }
+    game_manager.set_judge(@current_user)
 
     group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids)
     groups = group_query.groups
 
-    guard_errors do
-      game_manager.join_open_groups(*groups.select(&:open?)).errors
-    end 
-    guard_errors do
-      game_manager.join_closed_groups(*groups.select(&:closed?)).errors
-    end 
+    game_manager.join_open_groups(*groups.select(&:open?))
+    game_manager.join_closed_groups(*groups.select(&:closed?))
 
-    guard_errors { game_validator.create.errors }
-    guard_errors { @persistance.persist.errors }
+    game_validator.create
+    @persistance.persist
     success(game: game)
+  rescue ErrorsError => e
+    failure(errors: e.errors)
   end
 end                
 ```
