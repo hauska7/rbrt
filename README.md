@@ -41,11 +41,8 @@ class CreateGame < Case
   end
 
   def call
-    guard_errorr { @form.validate.errors }
     guard_errors { @current_user.authorize_case(self).errors }
-
-    group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids).groups
-    groups = group_query.groups
+    guard_errorr { @form.validate.errors }
 
     game_manager =
     @object_factory
@@ -57,6 +54,10 @@ class CreateGame < Case
     game_manager.set_game_validator
     guard_errors { game_manager.assign_user_input(@form.attributes).errors }
     guard_errors { game_manager.set_judge.errors }
+
+    group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids).groups
+    groups = group_query.groups
+
     guard_errors do
       game_manager.join_open_groups(*groups.select(&:open?)).errors
     end
