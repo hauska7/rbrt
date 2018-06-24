@@ -41,8 +41,8 @@ class CreateGame < Case
   end
 
   def call
-    guard_errors { @form.validate.errors }
     guard_errors { @current_user.authorize_case(self, object_factory: @object_factory).errors }
+    guard_errors { @form.validate.errors }
 
     group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids)
     groups = group_query.groups
