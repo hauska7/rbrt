@@ -45,7 +45,7 @@ class CreateGame < Case
   end
 
   def call
-    guard_errors { @form.validate }
+    guard_errorr { @form.validate_errors }
     guard_errors { @current_user.ban_errors(self) }
     guard_errors { @authorize.create_game_errors(@current_user) }
 
@@ -64,7 +64,7 @@ class CreateGame < Case
     .build_game_judge(game: game, judge: @current_user)
     .build_game_in_group(game: game, group: group)
 
-    guard_errors { game.validate_create_errors }
+    guard_errors { game.validator.create_errors }
     guard_errors { @persistance.persist.errors }
     success(game: game)
   end
