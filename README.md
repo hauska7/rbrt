@@ -57,10 +57,12 @@ class CreateGame < Case
       .can_add_game_errors(@current_user)
     end
 
-    game = @domain_factory.build_game
-    game.attributes.set(@form.attributes)
-    game.a.judge.associate(@current_user.a.judged_games).state.set_loaded
-    game.a.group.associate(group.a.games).state.set_loaded
+    game = @domain_factory.build_new_game
+    game.assign_attributes_from_user_input(@form.attributes)                                                                              
+    @factory
+    .associations
+    .build_game_judge(game: game, judge: @current_user)
+    .build_game_in_group(game: game, group: group)
 
     guard_errors { @game.validate_create_errors }
     guard_errors { @persistance.persist.errors }
