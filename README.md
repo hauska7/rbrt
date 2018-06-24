@@ -21,48 +21,49 @@ Checkout example app: https://github.com/hauska7/hacker_news_rbrt
 ## Use case example
 
 ```ruby
-require "./app/domain/game"
-require "./app/cases/cases"
+require "./app/cases/case"
 
-class CreateGame
+class CreateGame < Case
   def self.call(*args)
     new(*args).call
   end
 
-  # group_db_id:, attributes:
-  def initialize(queries:, persistance:, authorize:, current_user:, form:)
+  def initialize(
+    queries:,
+    persistance:,
+    authorize:,
+    current_user:,
+    form:,
+    domain_factory:
+  )
     @persistance = persistance
     @queries = queries
     @current_user = current_user
     @form = form
     @authorize = authorize
+    @domain_factory = domain_factory
   end
 
   def call
-    @form
-    .validate
-    .tap { |errors| return failure(errors: errors) unless errors.empty? }
-    @current_user
-    .ban_errors(self)
-    .tap { |errors| return failure(errors: errors) unless errors.empty? }
-    @authorize
-    .create_game_errors(@current_user)
-    .tap { |errors| return failure(errors: errors) unless errors.empty? }
+    guard_errors { @form.validate }
+    guard_errors { @current_user.ban_errors(self) }
+    guard_errors { @authorize.create_game_errors(@current_user) }
+
     group_query = @queries.group_with_owner_where_group_id(group_id: @form.group_db_id)
     group = group_query.group
-    group
-    .manager
-    .can_add_game_errors(@current_user)
-    .tap { |errors| return failure(errors: errors) unless errors.empty? }
-    game = Game.build
+    guard_errors do
+      group
+      .manager
+      .can_add_game_errors(@current_user)
+    end
+
+    game = @domain_factory.build_game
     game.attributes.set(@form.attributes)
     game.a.judge.associate(@current_user.a.judged_games).state.set_loaded
     game.a.group.associate(group.a.games).state.set_loaded
-    @game
-    .validate_create_errors
-    .tap { |errors| return failure(errors: errors) unless errors.empty? }
-    @persistance.add(@current_user, game, group)
-    @persistance.persist
+
+    guard_errors { @game.validate_create_errors }
+    guard_errors { @persistance.persist.errors }
     success(game: game)
   end
 end                
