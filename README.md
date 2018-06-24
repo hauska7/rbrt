@@ -27,42 +27,46 @@ class CreateGame < Case
   def initialize(
     queries:,
     persistance:,
-    authorize:,
     current_user:,
     form:,
-    domain_factory:
+    domain_factory:,
+    object_factory:
   )
     @persistance = persistance
     @queries = queries
     @current_user = current_user
     @form = form
-    @authorize = authorize
     @domain_factory = domain_factory
+    @object_factory = object_factory
   end
 
   def call
-    guard_errorr { @form.validate_errors }
-    guard_errors { @current_user.ban_errors(self) }
-    guard_errors { @authorize.create_game_errors(@current_user) }
+    guard_errorr { @form.validate.errors }
+    guard_errors { @current_user.authorize_case(self).errors }
 
-    group_query = @queries.group_with_owner_where_group_id(group_id: @form.group_db_id)
-    group = group_query.group
+    group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids).groups
+    groups = group_query.groups
+
+    game_manager =
+    @object_factory
+    .build_game_manager(
+      current_user: @current_user,
+      domain_factory: @domain_factory
+    )   
+    guard_errors { game_manager.build_game.errors }
+    game_manager.set_game_validator
+    guard_errors { game_manager.assign_user_input(@form.attributes).errors }
+    guard_errors { game_manager.set_judge.errors }
     guard_errors do
-      group
-      .manager
-      .can_add_game_errors(@current_user)
+      game_manager.join_open_groups(*groups.select(&:open?)).errors
+    end
+    guard_errors do
+      game_manager.join_closed_groups(*groups.select(&:closed?)).errors
     end
 
-    game = @domain_factory.build_new_game
-    game.assign_attributes_from_user_input(@form.attributes)                                                                              
-    @domain_factory
-    .associations
-    .build_game_judge(game: game, judge: @current_user)
-    .build_game_in_group(game: game, group: group)
-
-    guard_errors { game.validator.create_errors }
+    guard_errors { game_manager.game_validator.create.errors }
     guard_errors { @persistance.persist.errors }
-    success(game: game)
+    success(game: game_manager.game)
   end
 end                
 ```
