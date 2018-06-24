@@ -2,17 +2,13 @@
 
 ## Descriprion
 
-This is a business logic framework for ruby. It is meant as help for keeping tract of what is the state of domain objects and associations in memory. When time comes you can add domain objects to persistance object which will generate proper SQL writes.
+This is a business logic framework for ruby. It allows for running tests without database. Some patterns used are Repository, Identity Map, Unit Of Work.
 
 Business logic can depend on query methods for DB reads
 
   `queries.post_with_comments(post_id: post_id))`
   
 And persistance object for DB writes.
-
-  `persistance.add(post)`
-
-  `persistance.add(comments)`
 
   `persistance.persist`
   
