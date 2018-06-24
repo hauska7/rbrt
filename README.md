@@ -48,7 +48,8 @@ class CreateGame < Case
     @object_factory
     .build_game_manager(
       current_user: @current_user,
-      domain_factory: @domain_factory
+      domain_factory: @domain_factory,
+      object_factory: @object_factory
     )   
     guard_errors { game_manager.build_game.errors }
     game_manager.set_game_validator
