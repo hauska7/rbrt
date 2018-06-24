@@ -41,34 +41,30 @@ class CreateGame < Case
   end
 
   def call
-    guard_errors { @current_user.authorize_case(self).errors }
-    guard_errorr { @form.validate.errors }
+    guard_errors { @form.validate.errors }
+    guard_errors { @current_user.authorize_case(self, object_factory: @object_factory).errors }
 
-    game_manager =
-    @object_factory
-    .build_game_manager(
-      current_user: @current_user,
-      domain_factory: @domain_factory,
-      object_factory: @object_factory
-    )   
-    guard_errors { game_manager.build_game.errors }
-    game_manager.set_game_validator
-    guard_errors { game_manager.assign_user_input(@form.attributes).errors }
-    guard_errors { game_manager.set_judge.errors }
-
-    group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids).groups
+    group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids)
     groups = group_query.groups
 
+    game = @domain_factory.build_new_game
+    game.get_object_factory(@object_factory)
+
+    game_validator = game.object_factory.validator
+    guard_errors { game_validator.assign_user_input(@form.attributes).errors }
+
+    game_manager = game.object_factory.manager(current_user: @current_user, domain_factory: @domain_factory)
+    guard_errors { game_manager.set_judge(@current_user).errors }
     guard_errors do
       game_manager.join_open_groups(*groups.select(&:open?)).errors
-    end
+    end 
     guard_errors do
       game_manager.join_closed_groups(*groups.select(&:closed?)).errors
-    end
+    end 
 
-    guard_errors { game_manager.game_validator.create.errors }
+    guard_errors { game_validator.create.errors }
     guard_errors { @persistance.persist.errors }
-    success(game: game_manager.game)
+    success(game: game)
   end
 end                
 ```
