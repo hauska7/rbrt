@@ -59,12 +59,12 @@ class CreateGame < Case
 
     game = @domain_factory.build_new_game
     game.assign_attributes_from_user_input(@form.attributes)                                                                              
-    @factory
+    @domain_factory
     .associations
     .build_game_judge(game: game, judge: @current_user)
     .build_game_in_group(game: game, group: group)
 
-    guard_errors { @game.validate_create_errors }
+    guard_errors { game.validate_create_errors }
     guard_errors { @persistance.persist.errors }
     success(game: game)
   end
