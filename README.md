@@ -53,7 +53,7 @@ class CreateGame < UseCase
     game_manager = @object_factory.manager.build(domain: game, current_user: @current_user, domain_factory: @domain_factory)
     game_manager.set_judge(@current_user)
 
-    group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids)
+    group_query = @queries.groups_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids)
     groups = group_query.groups
 
     game_manager.join_open_groups(*groups.select(&:open?))
