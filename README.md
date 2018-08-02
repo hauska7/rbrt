@@ -17,9 +17,9 @@ Checkout example app: https://github.com/hauska7/hacker_news_rbrt
 ## Use case example
 
 ```ruby
-require "./app/cases/case"
+require "./app/cases/use_case"
 
-class CreateGame < Case
+class CreateGame < UseCase
   def self.call(*args)
     new(*args).call
   end
@@ -30,7 +30,8 @@ class CreateGame < Case
     current_user:,
     form:,
     domain_factory:,
-    object_factory:
+    object_factory:,
+    types:
   )
     @persistance = persistance
     @queries = queries
@@ -38,19 +39,18 @@ class CreateGame < Case
     @form = form
     @domain_factory = domain_factory
     @object_factory = object_factory
+    @types = types
   end
 
   def call
-    @current_user.authorize_case(self, object_factory: @object_factory)
     @form.validate
 
-    game = @domain_factory.build_new_game
-    game.get_object_factory(@object_factory)
+    game = @domain_factory.build(type: @types.game)
 
-    game_validator = game.object_factory.validator
+    game_validator = @object_factory.validator.build(domain: game)
     game_validator.assign_user_input(@form.attributes)
 
-    game_manager = game.object_factory.manager(current_user: @current_user, domain_factory: @domain_factory)
+    game_manager = @object_factory.manager.build(domain: game, current_user: @current_user, domain_factory: @domain_factory)
     game_manager.set_judge(@current_user)
 
     group_query = @queries.many_group_with_owner_and_group_with_rank_where_rank_ids(rank_ids: @form.rank_db_ids)
@@ -60,9 +60,11 @@ class CreateGame < Case
     game_manager.join_closed_groups(*groups.select(&:closed?))
 
     game_validator.create
+
     @persistance.persist
+
     success(game: game)
-  rescue ErrorsError => e
+  rescue UseCaseFailure => e
     failure(errors: e.errors)
   end
 end                
