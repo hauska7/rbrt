@@ -56,8 +56,10 @@ class CreateGame < UseCase
     groups_query = @queries.full_groups(group_ids: @form.group_db_ids)
     groups = groups_query.groups
 
-    game_manager.join_open_groups(*groups.select(&:open?))
-    game_manager.join_closed_groups(*groups.select(&:closed?))
+    open_groups = groups.select { |group| group.type.open? }
+    closed_groups = groups.select { |group| group.type.closed? }
+    game_manager.join_open_groups(*open_groups)
+    game_manager.join_closed_groups(*closed_groups)
 
     game_validator.create
 
