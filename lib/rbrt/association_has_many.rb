@@ -1,84 +1,57 @@
-require "rbrt/association_store"
-require "rbrt/association_store_single"
-require "rbrt/association_has_many_state"
-
 class Rbrt::AssociationHasMany
-  def self.build_has_many(base:, name:)
-    new(base: base, name: name)
+  def self.build(name:, type:, elements:)
+    fail unless type.has_many? && type.remember_destroyed?
+
+    new(name: name, type: type, active: elements.active, destroyed: elements.destroyed)
   end
 
-  def self.build_has_one(base:, name:)
-    new(base: base, name: name, store_active: Rbrt::AssociationStoreSingle.build).tap { |a| a.state.unset_loaded }
-  end
 
-  # TODO: state for has one
-  def initialize(base:, name:, store_active: Rbrt::AssociationStore.build)
-    @base = base
+  def initialize(name:, type:, active:, destroyed:)
     @name = name
-    @state = Rbrt::AssociationHasManyState.new
-    @active = store_active
-    @removed = Rbrt::AssociationStore.build
+    @type = type
+    @active = active
+    @destroyed = destroyed
   end
 
-  attr_reader :base, :active, :removed
-
-  def null?
-    false
-  end
-
-  def active?
-    !@active.empty?
-  end
-
-  def id
-    [@name, @base]
-  end
-
-  def ==(other)
-    other.id == id
-  end
-
-  def state
-    @state
-  end
+  attr_reader :active, :destroyed, :name, :type
 
   def get
-    @active.base
+    @active
   end
 
-  def unassociate!(*associations)
-    x = @active.remove(*associations)
-    @removed.add(*x.removed)
-    self
-  end
-
-  def unassociate(*associations)
-    unassociate!(*associations)
-    associations.map(&:unassociate!.with(self))
+  def unassociate(domain:)
+    if domain.respond_to?(:each)
+      common = domain - @active
+      @active.subtract(common)
+      @destroyed.add(common)
+    else
+      if @active.include?(domain)
+        @active.delete(domain)
+        @destroyed.add(domain)
+      end
+    end
     self
   end
 
   # TODO: unassociate block
-  def unassociate_self
-    @active.unassociate!(self)
-    unassociate!(*@active.to_a)
+  #def unassociate_self
+  #  @active.unassociate!(self)
+  #  unassociate!(*@active.to_a)
+  #  self
+  #end
+
+  def associate(domain:)
+    @active.add(domain)
     self
   end
 
-  def associate!(*associations)
-    @active.add(*associations)
+  def forget_destroyed(domain:)
+    @destroyed.delete(domain)
     self
   end
 
-  # TODO: move implementation to Association
-  def associate(*associations)
-    associate!(*associations)
-    associations.map(&:associate!.with(self))
-    self
-  end
-
-  def clear_memory
-    @removed.clear
+  def forget_active(domain:)
+    @active.delete(domain)
     self
   end
 end

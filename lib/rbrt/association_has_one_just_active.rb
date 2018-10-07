@@ -1,8 +1,6 @@
-require "rbrt/association_state"
-
 class Rbrt::AssociationHasOne
   def self.build(name:, type:, elements:, types:)
-    fail unless type.has_one? && type.remember_destroyed?
+    fail unless type.has_one? && type.just_active?
 
     active =
       if type.empty?
@@ -12,19 +10,18 @@ class Rbrt::AssociationHasOne
       else fail
       end
 
-    new(name: name, type: type, active: active, destroyed: elements.destroyed, types: types)
+    new(name: name, type: type, active: active, types: types)
   end
 
   # TODO: state for has one
-  def initialize(name:, type:, active:, destroyed:, types:)
+  def initialize(name:, type:, active:, types:)
     @name = name
     @type = type
     @active = active
-    @destroyed = destroyed
     @types = types
   end
 
-  attr_reader :active, :destroyed, :type, :name
+  attr_reader :active, :type, :name
 
   def set_active(active)
     @active = active
@@ -38,12 +35,9 @@ class Rbrt::AssociationHasOne
     @active
   end
 
-  # TODO: consider moving associate/unassociate form this object
-  # TODO: fail if in wrong state (unloaded)
   def unassociate
     fail "Empty association" unless @type.full?
 
-    @destroyed.add(@active)
     @active = nil
     @type = @types.get(type: @type, add_tag: :empty)
     self
@@ -57,32 +51,13 @@ class Rbrt::AssociationHasOne
   #end
 
   def associate(domain:)
-    if @type.has_one_full?
-      @destroyed.add(@active)
+    if @type.full?
       @active = domain
-    elsif @type.has_one_empty?
+    elsif @type.empty?
       @active = domain
       @type = @types.get(type: @type, add_tag: :full)
     else fail
     end
-    self
-  end
-
-  def forget_destroyed(domain:)
-    @destroyed.delete(domain)
-    self
-  end
-
-  def forget_active
-    fail unless @type.full?
-    
-    @active = nil
-    @type = @types.get(type: @type, add_tag: :empty)
-    self
-  end
-
-  def clear
-    @destroyed.clear
     self
   end
 end

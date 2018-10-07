@@ -1,7 +1,7 @@
 module Rbrt::DomainUtils
-  def to_ary
-    [self]
-  end
+  #def to_ary
+  #  [self]
+  #end
 
   def slice(*args)
     args.map do |key|

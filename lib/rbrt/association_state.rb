@@ -1,5 +1,5 @@
 # TODO: move flags to hash
-class Rbrt::AssociationHasManyState
+class Rbrt::AssociationState
   def initialize
     @flags = {}
   end
