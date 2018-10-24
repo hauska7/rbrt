@@ -1,6 +1,7 @@
 class Rbrt::Associations
 # TODO: build(type:)
   def self.build
+    new
   end
 
   def initialize
