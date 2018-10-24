@@ -57,10 +57,10 @@ class Rbrt::AssociationHasOne
   #end
 
   def associate(domain:)
-    if @type.has_one_full?
+    if @type.has_one? && @type.full?
       @destroyed.add(@active)
       @active = domain
-    elsif @type.has_one_empty?
+    elsif @type.has_one? && @type.empty?
       @active = domain
       @type = @types.get(type: @type, add_tag: :full)
     else fail
