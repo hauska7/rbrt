@@ -53,7 +53,7 @@ class Rbrt::Types
 
     tmp_type = Rbrt::Type.build(tag: tags)
 
-    found_type = @types.find { |type| == tmp_type }
+    found_type = @types.find { |type| type == tmp_type }
 
     if found_type
       found_type
