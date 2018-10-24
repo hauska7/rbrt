@@ -1,5 +1,3 @@
-require "rbrt/collection_map_missing"
-
 class Rbrt::AssociationStore
   def self.build(store: Set.new)
     new(store: store)
@@ -46,11 +44,4 @@ class Rbrt::AssociationStore
     @store.clear
     self
   end
-
-  # TODO: danger - rescuing some other method missing
-  #def method_missing(method_name, *args, &block)
-  #  @store.send(method_name, *args, &block)
-  #rescue MethodMissing
-  #  super
-  #end
 end

@@ -30,22 +30,22 @@ class Rbrt::Types
         if add_tag == :just_active
           tags.remove(:remember_destroyed)
         elsif add_tag == :remember_destroyed
-          tags.remove(:just_active)
+          tags.delete(:just_active)
         elsif add_tag == :empty
-          tags.remove(:full)
+          tags.delete(:full)
         elsif add_tag == :full
-          tags.remove(:empty)
+          tags.delete(:empty)
         end
       end
     else
       if add_tag == :just_active
-        tags.remove(:remember_destroyed)
+        tags.delete(:remember_destroyed)
       elsif add_tag == :remember_destroyed
-        tags.remove(:just_active)
+        tags.delete(:just_active)
       elsif add_tag == :empty
-        tags.remove(:full)
+        tags.delete(:full)
       elsif add_tag == :full
-        tags.remove(:empty)
+        tags.delete(:empty)
       end
     end
 
