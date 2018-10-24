@@ -1,4 +1,4 @@
-class Rbrt::AssociationHasManyJustActove
+class Rbrt::AssociationHasManyJustActive
   def self.build(iname:, type:, elements:)
     fail unless type.has_many? && type.just_active?
 

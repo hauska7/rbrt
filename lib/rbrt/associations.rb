@@ -4,6 +4,14 @@ class Rbrt::Associations
     new
   end
 
+  def self.merge(associations:, other_associations:)
+    other_associations.each do |other_association|
+      association = associations.fetch(other_association.name) { Rbrt::Association.build(type: other_association.type) }
+      Rbrt::Association.merge(association: association, other_association: other_association)
+    end
+    self
+  end
+
   def initialize
     @store = {}
   end
@@ -26,6 +34,10 @@ class Rbrt::Associations
     end
   end
 
+  def method_missing(method_name, *args, &block)
+    @store[method_name]
+  end
+
   #def self.build
   #  {}.tap do |associations|
   #    def associations.loaded
@@ -46,12 +58,4 @@ class Rbrt::Associations
   #    end
   #  end
   #end
-
-  def self.merge(associations:, other_associations:)
-    other_associations.each do |other_association|
-      association = associations.fetch(other_association.name) { Rbrt::Association.build(type: other_association.type) }
-      Rbrt::Association.merge(association: association, other_association: other_association)
-    end
-    self
-  end
 end
