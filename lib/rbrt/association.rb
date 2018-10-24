@@ -127,8 +127,8 @@ module Rbrt::Association
         association.unassociate
       else fail
       end
-    else fail
-    end
+    #else fail
+    #end
   end
 
   #def self.associate(association:, domain:, inverse_active_associations:, inverse_destroyed_associations:)
