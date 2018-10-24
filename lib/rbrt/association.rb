@@ -131,52 +131,52 @@ module Rbrt::Association
     end
   end
 
-  def self.associate(association:, domain:, inverse_active_associations:, inverse_destroyed_associations:)
-    type = association.type
-    if type.has_many?
-      if domain.respond_to?(:each)
-        domain.each do |domain|
-          domain.inverse_active_associations.add(domain: , association: association)
-        end
-      else
-        domain.inverse_active_associations << association
-      end
-      association.associate(domain: domain)
-    elsif type.has_one_full?
-      association.active.inverse_destroyed_associations << association
-      association.active.inverse_active_associations.delete(association)
-      domain.inverse_active_associations << association
+  #def self.associate(association:, domain:, inverse_active_associations:, inverse_destroyed_associations:)
+  #  type = association.type
+  #  if type.has_many?
+  #    if domain.respond_to?(:each)
+  #      domain.each do |domain|
+  #        domain.inverse_active_associations.add(domain: , association: association)
+  #      end
+  #    else
+  #      domain.inverse_active_associations << association
+  #    end
+  #    association.associate(domain: domain)
+  #  elsif type.has_one_full?
+  #    association.active.inverse_destroyed_associations << association
+  #    association.active.inverse_active_associations.delete(association)
+  #    domain.inverse_active_associations << association
 
-      association.associate(domain: domain)
-    elsif type.has_one_empty?
-      domain.inverse_active_associations << association
-      association.associate(domain: domain)
-    else fail
-    end
-    self
-  end
+  #    association.associate(domain: domain)
+  #  elsif type.has_one_empty?
+  #    domain.inverse_active_associations << association
+  #    association.associate(domain: domain)
+  #  else fail
+  #  end
+  #  self
+  #end
 
-  def self.unassociate(association:, domain:, inverse_active_associations:, inverse_destroyed_associations:)
-    type = association.type
-    if type.has_many?
-      if domain.respond_to?(:each)
-        domain.each do |domain|
-          domain.inverse_destroyed_associations << association
-          domain.inverse_active_associations.delete(association)
-        end
-      else
-        domain.inverse_destroyed_associations << association
-        domain.inverse_active_associations.delete(association)
-      end
+  #def self.unassociate(association:, domain:, inverse_active_associations:, inverse_destroyed_associations:)
+  #  type = association.type
+  #  if type.has_many?
+  #    if domain.respond_to?(:each)
+  #      domain.each do |domain|
+  #        domain.inverse_destroyed_associations << association
+  #        domain.inverse_active_associations.delete(association)
+  #      end
+  #    else
+  #      domain.inverse_destroyed_associations << association
+  #      domain.inverse_active_associations.delete(association)
+  #    end
 
-      association.associate(domain: domain)
-    elsif type.has_one_full?
-      association.active.inverse_destroyed_associations << association
-      association.active.inverse_active_associations.delete(association)
+  #    association.associate(domain: domain)
+  #  elsif type.has_one_full?
+  #    association.active.inverse_destroyed_associations << association
+  #    association.active.inverse_active_associations.delete(association)
 
-      association.associate(domain: domain)
-    else fail
-    end
-    self
-  end
+  #    association.associate(domain: domain)
+  #  else fail
+  #  end
+  #  self
+  #end
 end
