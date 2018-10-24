@@ -1,4 +1,4 @@
-class Rbrt::AssociationHasOne
+class Rbrt::AssociationHasOneJustActive
   def self.build(name:, type:, elements:, types:)
     fail unless type.has_one? && type.just_active?
 
