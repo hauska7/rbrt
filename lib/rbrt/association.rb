@@ -80,6 +80,7 @@ module Rbrt::Association
     new_association
   end
 
+  # TODO: revise this logic
   def self.merge(association:, other_association:)
     type = association.type
     other_type = other_association.type
