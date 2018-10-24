@@ -10,6 +10,10 @@ class Rbrt::Type < SimpleDelegator
     new(set)
   end
 
+  def tags
+    __getobj__
+  end
+
   def method_missing(method_name, *_args)
     tag = method_name.to_s[0..-2].to_sym
     __getobj__.include?(tag)
