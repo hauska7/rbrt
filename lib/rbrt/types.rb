@@ -41,6 +41,7 @@ class Rbrt::Types
           tags.delete(:empty)
         end
       end
+      tags.concat(add_tag)
     else
       if add_tag == :just_active
         tags.delete(:remember_destroyed)
@@ -51,9 +52,9 @@ class Rbrt::Types
       elsif add_tag == :full
         tags.delete(:empty)
       end
+      tags << add_tag
     end
 
-    tags.concat(add_tag)
 
     tmp_type = Rbrt::Type.build(tag: tags)
 
