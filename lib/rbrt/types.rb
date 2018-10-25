@@ -11,7 +11,7 @@ class Rbrt::Type < SimpleDelegator
   end
 
   def tags
-    __getobj__
+    __getobj__.to_a
   end
 
   def method_missing(method_name, *_args)
