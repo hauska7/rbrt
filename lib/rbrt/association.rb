@@ -72,8 +72,8 @@ module Rbrt::Association
     new_association
   end
 
-  def self.copy_active(association:, association_elements:)
-    just_active_type = Rbrt::Type.get(type: association.type, add_tag: :just_active)
+  def self.copy_active(types:, association:, association_elements:)
+    just_active_type = types.get(type: association.type, add_tag: :just_active)
 
     new_association = build(type: just_active_type, name: association.name, elements: association_elements)
     new_association.associate(domain: association.active) unless type.empty?
