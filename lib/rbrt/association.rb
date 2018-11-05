@@ -2,17 +2,17 @@ module Rbrt::Association
 # TODO: build(type:)
   def self.build(type:, **args)
     if type.has_many? && type.just_active?
-      Rbrt::AssociationHasMany.build(**args)
+      Rbrt::AssociationHasMany.build(type: type, **args)
     elsif type.has_many? && type.remember_destroyed?
-      Rbrt::AssociationHasManyRememberDestroyed.build(**args)
+      Rbrt::AssociationHasManyRememberDestroyed.build(type: type, **args)
     elsif type.has_one? && type.full? && type.just_active?
-      Rbrt::AssociationHasOne.build_full(**args)
+      Rbrt::AssociationHasOne.build_full(type: type, **args)
     elsif type.has_one? && type.full? && type.remember_destroyed?
-      Rbrt::AssociationHasOneRememberDestroyed.build_full(**args)
+      Rbrt::AssociationHasOneRememberDestroyed.build_full(type: type, **args)
     elsif type.has_one? && type.empty? && type.just_active?
-      Rbrt::AssociationHasOne.build_empty(**args)
+      Rbrt::AssociationHasOne.build_empty(type: type, **args)
     elsif type.has_one? && type.empty? && type.remember_destroyed?
-      Rbrt::AssociationHasOneRememberDestroyed.build_empty(**args)
+      Rbrt::AssociationHasOneRememberDestroyed.build_empty(type: type, **args)
     else fail
     end
   end
