@@ -2,6 +2,7 @@ module Rbrt::Association
 # TODO: build(type:)
   def self.build(type:, **args)
     if type.has_many? && type.just_active?
+      binding.pry
       Rbrt::AssociationHasMany.build(type: type, **args)
     elsif type.has_many? && type.remember_destroyed?
       Rbrt::AssociationHasManyRememberDestroyed.build(type: type, **args)
