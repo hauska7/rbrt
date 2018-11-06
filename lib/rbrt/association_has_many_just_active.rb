@@ -1,5 +1,5 @@
 class Rbrt::AssociationHasManyJustActive
-  def self.build(iname:, type:, elements:)
+  def self.build(name:, type:, elements:)
     fail unless type.has_many? && type.just_active?
 
     new(name: name, type: type, active: elements.active)
