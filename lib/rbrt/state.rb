@@ -27,6 +27,10 @@ class Rbrt::State
     self
   end
 
+  def existing?
+    existing_record?
+  end
+
   def existing_record?
     !@new_record
   end
