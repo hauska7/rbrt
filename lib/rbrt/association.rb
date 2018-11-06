@@ -6,13 +6,13 @@ module Rbrt::Association
     elsif type.has_many? && type.remember_destroyed?
       Rbrt::AssociationHasMany.build(type: type, **args)
     elsif type.has_one? && type.full? && type.just_active?
-      Rbrt::AssociationHasOneJustActive.build_full(type: type, **args)
+      Rbrt::AssociationHasOneJustActive.build(type: type, **args)
     elsif type.has_one? && type.full? && type.remember_destroyed?
-      Rbrt::AssociationHasOne.build_full(type: type, **args)
+      Rbrt::AssociationHasOne.build(type: type, **args)
     elsif type.has_one? && type.empty? && type.just_active?
-      Rbrt::AssociationHasOneJustActive.build_empty(type: type, **args)
+      Rbrt::AssociationHasOneJustActive.build(type: type, **args)
     elsif type.has_one? && type.empty? && type.remember_destroyed?
-      Rbrt::AssociationHasOne.build_empty(type: type, **args)
+      Rbrt::AssociationHasOne.build(type: type, **args)
     else fail
     end
   end
