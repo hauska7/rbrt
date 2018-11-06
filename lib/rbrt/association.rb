@@ -1,18 +1,17 @@
 module Rbrt::Association
-# TODO: build(type:)
-  def self.build(type:, **args)
+  def self.build(type:, types:, **args)
     if type.has_many? && type.just_active?
       Rbrt::AssociationHasManyJustActive.build(type: type, **args)
     elsif type.has_many? && type.remember_destroyed?
       Rbrt::AssociationHasMany.build(type: type, **args)
     elsif type.has_one? && type.full? && type.just_active?
-      Rbrt::AssociationHasOneJustActive.build(type: type, **args)
+      Rbrt::AssociationHasOneJustActive.build(type: type, types: types, **args)
     elsif type.has_one? && type.full? && type.remember_destroyed?
-      Rbrt::AssociationHasOne.build(type: type, **args)
+      Rbrt::AssociationHasOne.build(type: type, types: types, **args)
     elsif type.has_one? && type.empty? && type.just_active?
-      Rbrt::AssociationHasOneJustActive.build(type: type, **args)
+      Rbrt::AssociationHasOneJustActive.build(type: type, types: types, **args)
     elsif type.has_one? && type.empty? && type.remember_destroyed?
-      Rbrt::AssociationHasOne.build(type: type, **args)
+      Rbrt::AssociationHasOne.build(type: type, types: types, **args)
     else fail
     end
   end
@@ -75,7 +74,7 @@ module Rbrt::Association
   def self.copy_active(types:, association:, association_elements:)
     just_active_type = types.get(type: association.type, add_tag: :just_active)
 
-    new_association = build(type: just_active_type, name: association.name, elements: association_elements)
+    new_association = build(type: just_active_type, types: types, name: association.name, elements: association_elements)
     new_association.associate(domain: association.active) unless just_active_type.empty?
     new_association
   end
