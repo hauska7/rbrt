@@ -76,7 +76,7 @@ module Rbrt::Association
     just_active_type = types.get(type: association.type, add_tag: :just_active)
 
     new_association = build(type: just_active_type, name: association.name, elements: association_elements)
-    new_association.associate(domain: association.active) unless type.empty?
+    new_association.associate(domain: association.active) unless just_active_type.empty?
     new_association
   end
 
