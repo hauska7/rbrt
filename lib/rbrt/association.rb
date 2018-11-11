@@ -45,7 +45,7 @@ module Rbrt::Association
       destroyed.clear.add(this_world_destroyed)
     elsif type.has_many? && type.just_active?
       active = association.active
-      this_world_active = active.map { |domain| objects.find(domain: domain } }.compact
+      this_world_active = active.map { |domain| objects.find { |o| o == domain } }.compact
       active.clear.add(this_world_active)
     elsif type.has_one? && type.full? && type.just_active?
       this_world_active = objects.find { |domain| association.active.include?(domain) }
