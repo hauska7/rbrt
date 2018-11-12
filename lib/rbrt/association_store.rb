@@ -26,7 +26,7 @@ class Rbrt::AssociationStore
     @store.select(*args, &block)
   end
 
-  def include(*args, &block)
+  def include?(*args, &block)
     @store.include?(*args, &block)
   end
 
