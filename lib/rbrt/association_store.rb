@@ -26,6 +26,10 @@ class Rbrt::AssociationStore
     @store.select(*args, &block)
   end
 
+  def include(*args, &block)
+    @store.include?(*args, &block)
+  end
+
   def add(domain)
     if domain.respond_to?(:each)
       domain.each do |domain|
