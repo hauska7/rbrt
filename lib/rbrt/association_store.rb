@@ -22,6 +22,10 @@ class Rbrt::AssociationStore
     @store.map(*args, &block)
   end
 
+  def select(*args, &block)
+    @store.select(*args, &block)
+  end
+
   def add(domain)
     if domain.respond_to?(:each)
       domain.each do |domain|
