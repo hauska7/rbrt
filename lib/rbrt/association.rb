@@ -101,7 +101,7 @@ module Rbrt::Association
     elsif type.has_one? && type.full? && type.just_active?
       this_world_active = objects.find { |o| o == association.active }
       unless this_world_active
-        this_world_active = object_factory.build(domain: domain)
+        this_world_active = object_factory.build(domain: association.active)
         objects << this_world_active
         this_world_active
       end
