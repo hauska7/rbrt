@@ -22,11 +22,11 @@ class Rbrt::AssociationHasMany
   def unassociate(domain:)
     if domain.respond_to?(:each)
       common = domain - @active
-      @active.subtract(common)
+      @active.remove(domain: common)
       @destroyed.add(common)
     else
       if @active.include?(domain)
-        @active.delete(domain)
+        @active.remove(domain: domain)
         @destroyed.add(domain)
       end
     end

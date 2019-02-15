@@ -18,11 +18,7 @@ class Rbrt::AssociationHasManyJustActive
   end
 
   def unassociate(domain:)
-    if domain.respond_to?(:each)
-      @active.subtract(domain)
-    else
-      @active.delete(domain)
-    end
+    @active.remove(domain: domain)
     self
   end
 
