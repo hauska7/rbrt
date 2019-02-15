@@ -25,6 +25,8 @@ class Rbrt::Types
     @types = []
   end
 
+  attr_reader :types
+
   def get(type: nil, add_tag: nil)
     tags = []
     tags.concat(type.tags) unless type.nil?

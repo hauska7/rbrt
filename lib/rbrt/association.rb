@@ -140,7 +140,6 @@ module Rbrt::Association
     # type.just_active?
     # other_type.remember_destroyed?
     # type and other_type match at has_one? has_many?
-    binding.pry
       if other_type.empty?
         if type.just_active?
           if other_type.just_active?
