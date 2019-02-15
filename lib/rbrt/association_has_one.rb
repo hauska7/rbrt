@@ -56,6 +56,7 @@ class Rbrt::AssociationHasOne
   #  self
   #end
 
+  # TODO: split logic by type and put it on parent in Simple delegator
   def associate(domain:)
     if @type.has_one? && @type.full?
       @destroyed.add(@active)

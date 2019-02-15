@@ -111,10 +111,10 @@ module Rbrt::Association
     end
   end
 
-  def self.copy(association:, association_elements:)
+  def self.copy(types:, association:, association_elements:)
     type = association.type
 
-    new_association = build(type: type, name: association.name, elements: association_elements)
+    new_association = build(type: type, types: types, name: association.name, elements: association_elements)
     new_association.associate(domain: association.active) unless type.empty?
     new_association
 
