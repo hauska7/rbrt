@@ -51,7 +51,7 @@ module Rbrt::Association
       end
       destroyed.clear.add(this_world_destroyed)
     elsif type.has_one? && type.full? && type.remember_destroyed?
-      this_world_active = objects.find { |domain| domain == association.active.get }
+      this_world_active = objects.find { |domain| domain == association.active }
       unless this_world_active
         this_world_active = object_factory.build(domain: domain)
         objects << this_world_active
@@ -136,10 +136,13 @@ module Rbrt::Association
   def self.merge(association:, other_association:)
     type = association.type
     other_type = other_association.type
-    #fail "Association type mismatch" unless type == other_type
+    fail "Association type mismatch" if type.has_one? != other_type.has_one?
+    fail "Association type mismatch" if type.has_many? != other_type.has_many?
+    has_one = type.has_one?
     # type.just_active?
     # other_type.remember_destroyed?
     # type and other_type match at has_one? has_many?
+    unless has_one
       if other_type.empty?
         if type.just_active?
           if other_type.just_active?
@@ -173,14 +176,16 @@ module Rbrt::Association
         end
       else fail
       end
+    end
+
+    if has_one
       if other_type.full?
         association.associate(domain: other_association.get)
       elsif other_type.empty?
         association.unassociate
       else fail
       end
-    #else fail
-    #end
+    end
   end
 
   #def self.associate(association:, domain:, inverse_active_associations:, inverse_destroyed_associations:)
