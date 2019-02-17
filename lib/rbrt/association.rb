@@ -38,18 +38,19 @@ module Rbrt::Association
       #TODO: queries.get_from_this_world(domain: active)
       active.clear.add(this_world_active)
 
-      destroyed = association.destroyed
-      this_world_destroyed = destroyed.map do |domain|
-        object = objects.find { |o| o == domain }
-        if object
-          object
-        else
-          object = object_factory.build(domain: domain)
-          objects << object
-          object
-        end
-      end
-      destroyed.clear.add(this_world_destroyed)
+      #destroyed = association.destroyed
+      #this_world_destroyed = destroyed.map do |domain|
+      #  object = objects.find { |o| o == domain }
+      #  if object
+      #    object
+      #  else
+      #    object = object_factory.build(domain: domain)
+      #    objects << object
+      #    object
+      #  end
+      #end
+      #destroyed.clear.add(this_world_destroyed)
+      destroyed.clear
     elsif type.has_one? && type.full? && type.remember_destroyed?
       this_world_active = objects.find { |domain| domain == association.active }
       unless this_world_active
@@ -60,31 +61,33 @@ module Rbrt::Association
 
       association.set_active(this_world_active)
 
-      destroyed = association.destroyed
-      this_world_destroyed = destroyed.map do |domain|
-        object = objects.find { |o| o == domain }
-        if object
-          object
-        else
-          object = object_factory.build(domain: domain)
-          objects << object
-          object
-        end
-      end
-      destroyed.clear.add(this_world_destroyed)
+      #destroyed = association.destroyed
+      #this_world_destroyed = destroyed.map do |domain|
+      #  object = objects.find { |o| o == domain }
+      #  if object
+      #    object
+      #  else
+      #    object = object_factory.build(domain: domain)
+      #    objects << object
+      #    object
+      #  end
+      #end
+      #destroyed.clear.add(this_world_destroyed)
+      destroyed.clear
     elsif type.has_one? && type.empty? && type.remember_destroyed?
-      destroyed = association.destroyed
-      this_world_destroyed = destroyed.map do |domain|
-        object = objects.find { |o| o == domain }
-        if object
-          object
-        else
-          object = object_factory.build(domain: domain)
-          objects << object
-          object
-        end
-      end
-      destroyed.clear.add(this_world_destroyed)
+      #destroyed = association.destroyed
+      #this_world_destroyed = destroyed.map do |domain|
+      #  object = objects.find { |o| o == domain }
+      #  if object
+      #    object
+      #  else
+      #    object = object_factory.build(domain: domain)
+      #    objects << object
+      #    object
+      #  end
+      #end
+      #destroyed.clear.add(this_world_destroyed)
+      destroyed.clear
     elsif type.has_many? && type.just_active?
       active = association.active
       this_world_active = active.map do |domain|
