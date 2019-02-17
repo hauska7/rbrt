@@ -36,7 +36,7 @@ class Rbrt::AssociationHasOneJustActive
   end
 
   def unassociate(domain: nil)
-    fail "Empty association" unless @type.full?
+    #fail "Empty association" unless @type.full?
     fail "domain object not associated" if domain && domain != @active
 
     @active = nil

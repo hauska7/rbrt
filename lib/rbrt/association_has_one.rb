@@ -42,11 +42,15 @@ class Rbrt::AssociationHasOne
   # TODO: fail if in wrong state (unloaded)
   def unassociate(domain: nil)
     fail "domain object not associated" if domain && domain != @active
-    fail "Empty association" unless @type.full?
+    #fail "Empty association" unless @type.full?
 
-    @destroyed.add(@active)
-    @active = nil
-    @type = @types.get(type: @type, add_tag: :empty)
+    if @type.full?
+      @destroyed.add(@active)
+      @active = nil
+      @type = @types.get(type: @type, add_tag: :empty)
+    elsif @type.empty?
+    else fail
+    end
     self
   end
 
