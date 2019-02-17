@@ -50,7 +50,7 @@ module Rbrt::Association
       #  end
       #end
       #destroyed.clear.add(this_world_destroyed)
-      destroyed.clear
+      association.destroyed.clear
     elsif type.has_one? && type.full? && type.remember_destroyed?
       this_world_active = objects.find { |domain| domain == association.active }
       unless this_world_active
@@ -73,7 +73,7 @@ module Rbrt::Association
       #  end
       #end
       #destroyed.clear.add(this_world_destroyed)
-      destroyed.clear
+      association.destroyed.clear
     elsif type.has_one? && type.empty? && type.remember_destroyed?
       #destroyed = association.destroyed
       #this_world_destroyed = destroyed.map do |domain|
@@ -87,7 +87,7 @@ module Rbrt::Association
       #  end
       #end
       #destroyed.clear.add(this_world_destroyed)
-      destroyed.clear
+      association.destroyed.clear
     elsif type.has_many? && type.just_active?
       active = association.active
       this_world_active = active.map do |domain|
