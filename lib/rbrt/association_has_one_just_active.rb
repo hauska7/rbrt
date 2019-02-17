@@ -65,4 +65,9 @@ class Rbrt::AssociationHasOneJustActive
     end
     self
   end
+
+  def forget_active
+    @active = nil
+    self
+  end
 end
