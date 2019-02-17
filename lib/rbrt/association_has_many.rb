@@ -51,7 +51,7 @@ class Rbrt::AssociationHasMany
   end
 
   def forget_active(domain:)
-    @active.delete(domain)
+    @active.remove(domain: domain)
     self
   end
 end

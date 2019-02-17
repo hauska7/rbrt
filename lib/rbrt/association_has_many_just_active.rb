@@ -33,4 +33,9 @@ class Rbrt::AssociationHasManyJustActive
     @active.add(domain)
     self
   end
+
+  def forget_active(domain:)
+    @active.remove(domain: domain)
+    self
+  end
 end
