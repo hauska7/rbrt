@@ -41,7 +41,7 @@ class Rbrt::AssociationHasOne
   # TODO: consider moving associate/unassociate form this object
   # TODO: fail if in wrong state (unloaded)
   def unassociate(domain: nil)
-    fail "domain object not associated" if domain && domain != @active
+    #fail "domain object not associated" if domain && domain != @active
     #fail "Empty association" unless @type.full?
 
     if @type.full?
