@@ -80,8 +80,6 @@ class Rbrt::AssociationHasOne
   end
 
   def forget_active
-    fail unless @type.full?
-    
     @active = nil
     @type = @types.get(type: @type, add_tag: :empty)
     self
