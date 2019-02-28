@@ -35,7 +35,7 @@ class Rbrt::Associations
   end
 
   def has?(association_name)
-    @store.key?(association_name)
+    @store.key?(association_name.to_sym)
   end
 
   def method_missing(method_name, *args, &block)
