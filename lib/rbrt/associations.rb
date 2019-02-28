@@ -39,7 +39,7 @@ class Rbrt::Associations
   end
 
   def method_missing(method_name, *args, &block)
-    @store[method_name] || fail "no association #{method_name} in associations"
+    @store[method_name] || fail("no association #{method_name} in associations")
   end
 
   #def self.build
