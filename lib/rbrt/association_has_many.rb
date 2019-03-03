@@ -33,14 +33,8 @@ class Rbrt::AssociationHasMany
     self
   end
 
-  # TODO: unassociate block
-  #def unassociate_self
-  #  @active.unassociate!(self)
-  #  unassociate!(*@active.to_a)
-  #  self
-  #end
-
   def associate(domain:)
+    @destroyed.remove(domain: domain)
     @active.add(domain)
     self
   end

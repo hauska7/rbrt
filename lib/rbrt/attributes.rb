@@ -24,6 +24,11 @@ class Rbrt::Attributes
     @content
   end
 
+  # todo @content.clone ???
+  def content
+    @content
+  end
+
   def set_content(content)
     @content.merge!(content.select { |attribute, _value| @whitelist.include?(attribute) })
     self
