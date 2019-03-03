@@ -1,7 +1,11 @@
 class Rbrt::Associations
 # TODO: build(type:)
   def self.build
-    new
+    new({})
+  end
+
+  def self.build_from_hash(hash)
+    new(hash.clone)
   end
 
   def self.merge(associations:, other_associations:)
@@ -12,8 +16,8 @@ class Rbrt::Associations
     self
   end
 
-  def initialize
-    @store = {}
+  def initialize(store)
+    @store = store
   end
 
   attr_reader :store
