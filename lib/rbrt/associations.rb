@@ -16,6 +16,8 @@ class Rbrt::Associations
     @store = {}
   end
 
+  attr_reader :store
+
   def each(&block)
     @store.map(&:second).each(&block)
   end
