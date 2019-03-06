@@ -5,6 +5,14 @@ class Rbrt::AssociationHasMany
     new(name: name, type: type, active: elements.active, destroyed: elements.destroyed)
   end
 
+  def self.clone(association_has_many:)
+    new(
+      name: association_has_many.name,
+      type: association_has_many.type,
+      active: association_has_many.active.clone,
+      destroyed: association_has_many.destroyed.clone
+    )
+  end
 
   def initialize(name:, type:, active:, destroyed:)
     @name = name
@@ -14,6 +22,10 @@ class Rbrt::AssociationHasMany
   end
 
   attr_reader :active, :destroyed, :name, :type
+
+  def clone
+    Rbrt::AssociationHasMany.clone(association_has_many: self)
+  end
 
   def get
     @active

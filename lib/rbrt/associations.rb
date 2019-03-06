@@ -8,6 +8,14 @@ class Rbrt::Associations
     new(hash.clone)
   end
 
+  def self.clone(associations:)
+    result = build
+    associations.each do |association|
+      result.add(association.clone)
+    end
+    result
+  end
+
   def self.merge(associations:, other_associations:)
     other_associations.each do |other_association|
       association = associations.fetch(other_association.name) { Rbrt::Association.build(type: other_association.type) }

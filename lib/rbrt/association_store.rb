@@ -12,6 +12,10 @@ class Rbrt::AssociationStore
     @store = store
   end
 
+  def clone
+    self.class.copy(association_store: self)
+  end
+
   attr_reader :store
 
   def each(*args, &block)
