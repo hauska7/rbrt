@@ -28,6 +28,14 @@ class Rbrt::Associations
     @store = store
   end
 
+  def clone
+    self.class.clone(associations: self)
+  end
+
+  def merge(associations:)
+    self.class.merge(associations: self, other_associations: associations)
+  end
+
   attr_reader :store
 
   def each(&block)
