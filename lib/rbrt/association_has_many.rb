@@ -63,7 +63,7 @@ class Rbrt::AssociationHasMany
 
   def replace_all(domain:)
     @active.map! do |active_object|
-      domain.find { |domain_object| same?(domain_object, active_object) } || fail("must be found") }
+      domain.find { |domain_object| same?(domain_object, active_object) } || fail("must be found")
     end
   end
 
