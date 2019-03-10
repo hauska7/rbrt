@@ -61,7 +61,7 @@ class Rbrt::Associations
   end
 
   def replace_all(domain:)
-    each { |association| replace_all(domain: domain) }
+    each { |association| association.replace_all(domain: domain) }
   end
 
   def method_missing(method_name, *args, &block)
