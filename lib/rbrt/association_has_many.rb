@@ -60,4 +60,14 @@ class Rbrt::AssociationHasMany
     @active.clear
     self
   end
+
+  def replace_all(domain:)
+    @active.map! do |active_object|
+      domain.find { |domain_object| same?(domain_object, active_object) } || fail("must be found") }
+    end
+  end
+
+  def same(object, other)
+    object.id == other.id
+  end
 end

@@ -26,6 +26,10 @@ class Rbrt::AssociationStore
     @store.map(*args, &block)
   end
 
+  def map!(*args, &block)
+    @store.map!(*args, &block)
+  end
+
   def select(*args, &block)
     @store.select(*args, &block)
   end
