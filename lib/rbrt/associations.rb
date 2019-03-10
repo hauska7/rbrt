@@ -60,6 +60,10 @@ class Rbrt::Associations
     @store.key?(association_name.to_sym)
   end
 
+  def replace_all(domain:)
+    each { |association| replace_all(domain: domain) }
+  end
+
   def method_missing(method_name, *args, &block)
     @store[method_name] || fail("no association #{method_name} in associations")
   end

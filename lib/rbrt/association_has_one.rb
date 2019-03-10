@@ -89,4 +89,12 @@ class Rbrt::AssociationHasOne
     @destroyed.clear
     self
   end
+
+  def replace_all(domain:)
+    @active = domain.find { |domain_object| same?(domain_object, @active) } || fail("must be found")
+  end
+
+  def same(object, other)
+    object.id == other.id
+  end
 end
