@@ -94,7 +94,7 @@ class Rbrt::AssociationHasOne
     @active = domain.find { |domain_object| same?(domain_object, @active) } || fail("must be found")
   end
 
-  def same(object, other)
+  def same?(object, other)
     object.id == other.id
   end
 end

@@ -67,7 +67,7 @@ class Rbrt::AssociationHasMany
     end
   end
 
-  def same(object, other)
+  def same?(object, other)
     object.id == other.id
   end
 end
