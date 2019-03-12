@@ -16,9 +16,16 @@ class Rbrt::Associations
     result
   end
 
-  def self.merge(associations:, other_associations:, types:)
+  def self.merge(associations:, other_associations:, types:, elements:)
     other_associations.each do |other_association|
-      association = associations.fetch(other_association.name) { Rbrt::Association.build(type: other_association.type, types: types) }
+      association = associations.fetch(other_association.name) do
+        Rbrt::Association.build(
+          type: other_association.type,
+          types: types,
+          name: other_association.name,
+          elements: elements
+        )
+      end
       Rbrt::Association.merge(association: association, other_association: other_association)
     end
     self
@@ -32,8 +39,8 @@ class Rbrt::Associations
     self.class.clone(associations: self)
   end
 
-  def merge(associations:, types:)
-    self.class.merge(associations: self, other_associations: associations, types: types)
+  def merge(associations:, types:, elements:)
+    self.class.merge(associations: self, other_associations: associations, types: types, elements: elements)
   end
 
   attr_reader :store
