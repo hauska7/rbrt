@@ -49,6 +49,13 @@ class Rbrt::AssociationStore
     self
   end
 
+  # todo: remove this method
+  def -(enumerable)
+    result = clone
+    result.store.delete_if { |x| enumerable.include?(x) }
+    result
+  end
+
   def remove(domain:)
     if domain.respond_to?(:each)
       domain.each do |domain|
