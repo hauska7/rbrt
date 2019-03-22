@@ -45,7 +45,9 @@ class Rbrt::AssociationHasMany
     self
   end
 
-  def associate(domain:)
+  def associate(domain:, relation: nil)
+    # TODO: relation
+
     @destroyed.remove(domain: domain)
     @active.add(domain)
     self

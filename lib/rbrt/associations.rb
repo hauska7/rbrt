@@ -17,17 +17,21 @@ class Rbrt::Associations
   end
 
   def self.merge(associations:, other_associations:, types:, elements:)
+    new_associations = []
     other_associations.each do |other_association|
-      association = associations.fetch(other_association.name) do
-        Rbrt::Association.build(
+      association = associations.fetch(other_association.name, nil)
+      unless association
+        association = Rbrt::Association.build(
           type: other_association.type,
           types: types,
           name: other_association.name,
           elements: elements
         )
+        new_associations << association
       end
       Rbrt::Association.merge(association: association, other_association: other_association)
     end
+    other_associations.add(new_associations)
     self
   end
 
@@ -54,7 +58,14 @@ class Rbrt::Associations
   end
 
   def add(association)
-    @store[association.name] = association
+    if association.respond_to?(:each)
+      association.each do |association|
+        @store[association.name] = association
+      end
+    else
+      @store[association.name] = association
+    end
+    self
   end
 
   def forget_destroyed
