@@ -31,7 +31,7 @@ class Rbrt::Associations
       end
       Rbrt::Association.merge(association: association, other_association: other_association)
     end
-    other_associations.add(new_associations)
+    associations.add(new_associations)
     self
   end
 
