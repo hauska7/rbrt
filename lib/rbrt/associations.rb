@@ -60,10 +60,10 @@ class Rbrt::Associations
   def add(association)
     if association.respond_to?(:each)
       association.each do |association|
-        @store[association.name] = association
+        @store[association.name.to_sym] = association
       end
     else
-      @store[association.name] = association
+      @store[association.name.to_sym] = association
     end
     self
   end
